@@ -4,6 +4,20 @@
 
 灵感来自 [PEV2](https://github.com/dalibo/pev2)（PostgreSQL Explain Visualizer），但专为 IoTDB 的分布式架构设计，支持多分片计划可视化。
 
+## 界面截图
+
+### 深色模式 — EXPLAIN ANALYZE 分片可视化
+![深色模式 - 执行分析](docs/images/dark-analyze.png)
+
+### 深色模式 — 节点详情面板
+![深色模式 - 详情面板](docs/images/dark-detail.png)
+
+### 浅色模式 — EXPLAIN ANALYZE
+![浅色模式 - 执行分析](docs/images/light-analyze.png)
+
+### 浅色模式 — 节点详情面板
+![浅色模式 - 详情面板](docs/images/light-detail.png)
+
 ## 功能特性
 
 - **三种分析模式**：`EXPLAIN`、`EXPLAIN ANALYZE` 和 `EXPLAIN ANALYZE VERBOSE`
