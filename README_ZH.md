@@ -4,6 +4,8 @@
 
 灵感来自 [PEV2](https://github.com/dalibo/pev2)（PostgreSQL Explain Visualizer），但专为 IoTDB 的分布式架构设计，支持多分片计划可视化。
 
+> **注意**：本工具需要 IoTDB 支持 `EXPLAIN (FORMAT JSON)` 语法。该功能由 [apache/iotdb#17430](https://github.com/apache/iotdb/pull/17430) 引入，请确保您使用的 IoTDB 版本已合入该 PR。
+
 ## 界面截图
 
 ### 深色模式 — EXPLAIN ANALYZE 分片可视化

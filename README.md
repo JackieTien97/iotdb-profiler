@@ -4,6 +4,8 @@ A web-based tool for visualizing Apache IoTDB table-model query execution plans.
 
 Inspired by [PEV2](https://github.com/dalibo/pev2) (PostgreSQL Explain Visualizer), but designed for IoTDB's distributed architecture with multi-fragment plan visualization.
 
+> **Note**: This tool requires IoTDB with `EXPLAIN (FORMAT JSON)` support. This feature is introduced in [apache/iotdb#17430](https://github.com/apache/iotdb/pull/17430). Please ensure this PR has been merged into the IoTDB version you are using.
+
 ## Screenshots
 
 ### Dark Mode — EXPLAIN ANALYZE with Fragment Grouping
