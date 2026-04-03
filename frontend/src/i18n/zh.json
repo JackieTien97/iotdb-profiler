@@ -1,0 +1,54 @@
+{
+  "title": "IoTDB 查询计划可视化",
+  "connection": {
+    "title": "连接配置",
+    "host": "主机",
+    "port": "端口",
+    "username": "用户名",
+    "password": "密码",
+    "database": "数据库",
+    "test": "测试连接",
+    "testing": "测试中...",
+    "success": "连接成功",
+    "failed": "连接失败"
+  },
+  "query": {
+    "title": "查询",
+    "placeholder": "请输入 SQL 查询...",
+    "mode": "模式",
+    "explain": "执行计划",
+    "explainAnalyze": "执行分析",
+    "explainAnalyzeVerbose": "详细执行分析",
+    "run": "执行",
+    "running": "执行中..."
+  },
+  "plan": {
+    "statistics": "计划统计",
+    "analyzeCost": "分析",
+    "fetchPartition": "分区",
+    "fetchSchema": "模式",
+    "logicalPlan": "逻辑计划",
+    "logicalOptimization": "优化",
+    "distributionPlan": "分布式",
+    "dispatchCost": "调度",
+    "totalPlanning": "总计划时间",
+    "fragments": "分片实例",
+    "noResult": "执行查询以查看执行计划"
+  },
+  "node": {
+    "cpuTime": "CPU 时间",
+    "outputRows": "行数",
+    "memory": "内存",
+    "region": "区域",
+    "fragment": "分片",
+    "state": "状态",
+    "wallTime": "耗时",
+    "properties": "属性",
+    "details": "详情",
+    "queryStats": "查询统计",
+    "specifiedInfo": "特定信息"
+  },
+  "lang": {
+    "toggle": "English"
+  }
+}

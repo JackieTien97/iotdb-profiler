@@ -1,0 +1,132 @@
+@import "tailwindcss";
+@import "@xyflow/react/dist/style.css";
+
+/* ─── Light Theme (Claude-inspired warm cream) ─── */
+:root, [data-theme="light"] {
+  --bg-base: #F8F5EE;
+  --bg-surface: #FFFFFF;
+  --bg-raised: #F2EDE4;
+  --bg-input: #FFFFFF;
+  --bg-hover: #F0EBE1;
+  --border: #E5DED3;
+  --border-strong: #D4C9B8;
+  --border-accent: rgba(201, 100, 66, 0.35);
+  --text-primary: #1A1613;
+  --text-secondary: #6B6056;
+  --text-muted: #9C9286;
+  --accent: #C96442;
+  --accent-hover: #B5573A;
+  --accent-soft: rgba(201, 100, 66, 0.08);
+  --accent-text: #FFFFFF;
+  --success: #3D8B5E;
+  --success-bg: rgba(61, 139, 94, 0.08);
+  --error: #C44536;
+  --error-bg: rgba(196, 69, 54, 0.06);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --flow-bg-dots: rgba(0, 0, 0, 0.06);
+  --flow-edge: #D4C9B8;
+  --flow-edge-exchange: #C96442;
+  --node-handle: #C96442;
+  --scrollbar-thumb: rgba(0, 0, 0, 0.1);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.18);
+  --monaco-theme: light;
+}
+
+/* ─── Dark Theme (warm charcoal) ─── */
+[data-theme="dark"] {
+  --bg-base: #1B1916;
+  --bg-surface: #252220;
+  --bg-raised: #2E2A27;
+  --bg-input: #201D1A;
+  --bg-hover: #332F2B;
+  --border: #3A3530;
+  --border-strong: #4A443D;
+  --border-accent: rgba(217, 119, 87, 0.35);
+  --text-primary: #EDE8E1;
+  --text-secondary: #A69D93;
+  --text-muted: #706860;
+  --accent: #D97757;
+  --accent-hover: #E68A6A;
+  --accent-soft: rgba(217, 119, 87, 0.1);
+  --accent-text: #FFFFFF;
+  --success: #5DB97E;
+  --success-bg: rgba(93, 185, 126, 0.1);
+  --error: #E06050;
+  --error-bg: rgba(224, 96, 80, 0.08);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --flow-bg-dots: rgba(255, 255, 255, 0.04);
+  --flow-edge: #4A443D;
+  --flow-edge-exchange: #D97757;
+  --node-handle: #D97757;
+  --scrollbar-thumb: rgba(255, 255, 255, 0.08);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.14);
+  --monaco-theme: vs-dark;
+}
+
+/* ─── Fonts ─── */
+:root {
+  --font-sans: 'Bricolage Grotesque', 'Source Sans 3', system-ui, sans-serif;
+  --font-body: 'Source Sans 3', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/* ─── Base ─── */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.25s, color 0.25s;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+
+/* ─── React Flow overrides ─── */
+.react-flow__background { background: var(--bg-base) !important; }
+.react-flow__minimap {
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+}
+.react-flow__controls {
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+  box-shadow: var(--shadow-md) !important;
+}
+.react-flow__controls button {
+  background: var(--bg-surface) !important;
+  border-bottom-color: var(--border) !important;
+  fill: var(--text-secondary) !important;
+}
+.react-flow__controls button:hover {
+  background: var(--bg-hover) !important;
+  fill: var(--text-primary) !important;
+}
+
+/* ─── Animations ─── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}

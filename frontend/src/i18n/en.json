@@ -1,0 +1,54 @@
+{
+  "title": "IoTDB Query Plan Visualizer",
+  "connection": {
+    "title": "Connection",
+    "host": "Host",
+    "port": "Port",
+    "username": "Username",
+    "password": "Password",
+    "database": "Database",
+    "test": "Test Connection",
+    "testing": "Testing...",
+    "success": "Connected",
+    "failed": "Connection failed"
+  },
+  "query": {
+    "title": "Query",
+    "placeholder": "Enter SQL query...",
+    "mode": "Mode",
+    "explain": "Explain",
+    "explainAnalyze": "Explain Analyze",
+    "explainAnalyzeVerbose": "Explain Analyze Verbose",
+    "run": "Run",
+    "running": "Executing..."
+  },
+  "plan": {
+    "statistics": "Plan Statistics",
+    "analyzeCost": "Analyze",
+    "fetchPartition": "Partition",
+    "fetchSchema": "Schema",
+    "logicalPlan": "Logical Plan",
+    "logicalOptimization": "Optimization",
+    "distributionPlan": "Distribution",
+    "dispatchCost": "Dispatch",
+    "totalPlanning": "Total Planning",
+    "fragments": "Fragment Instances",
+    "noResult": "Execute a query to see the execution plan"
+  },
+  "node": {
+    "cpuTime": "CPU Time",
+    "outputRows": "Rows",
+    "memory": "Memory",
+    "region": "Region",
+    "fragment": "Fragment",
+    "state": "State",
+    "wallTime": "Wall Time",
+    "properties": "Properties",
+    "details": "Details",
+    "queryStats": "Query Statistics",
+    "specifiedInfo": "Specified Info"
+  },
+  "lang": {
+    "toggle": "中文"
+  }
+}
