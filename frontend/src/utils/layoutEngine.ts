@@ -8,6 +8,20 @@ const NODE_HEIGHT_ANALYZE = 160;
 const FRAGMENT_PADDING = 24;
 const FRAGMENT_GAP = 12; // minimum gap between fragment boxes
 
+function computeMaxOutputRows(node: UnifiedTreeNode): number {
+  let max = node.outputRows ?? 0;
+  for (const child of node.children) {
+    max = Math.max(max, computeMaxOutputRows(child));
+  }
+  return max;
+}
+
+function edgeStrokeWidth(outputRows: number | undefined, maxOutputRows: number): number {
+  if (!outputRows || maxOutputRows === 0) return 1;
+  const logRatio = Math.log(outputRows + 1) / Math.log(maxOutputRows + 1);
+  return 1 + 5 * logRatio; // range: 1px to 6px
+}
+
 export function computeLayout(
   root: UnifiedTreeNode,
   isAnalyze: boolean
@@ -36,6 +50,7 @@ export function computeLayout(
 
   const nodes: Node[] = [];
   const edges: Edge[] = [];
+  const maxOutputRows = isAnalyze ? computeMaxOutputRows(root) : 0;
 
   // Track positions per fragment for bounding box computation
   const fragmentBounds = new Map<
@@ -82,14 +97,43 @@ export function computeLayout(
     }
 
     for (const child of node.children) {
+      const strokeWidth = isAnalyze ? edgeStrokeWidth(child.outputRows, maxOutputRows) : 1.5;
+
+      let edgeStyle: Record<string, unknown>;
+      let animated = false;
+      let label: string | undefined;
+      let labelStyle: Record<string, unknown> | undefined;
+      let labelBgStyle: Record<string, unknown> | undefined;
+
+      if (child.isExchangeLink) {
+        const isCrossNode = node.fragmentIp !== child.fragmentIp;
+        if (isCrossNode) {
+          // Cross-node: RPC, network + serialization
+          edgeStyle = { strokeDasharray: '6,3', stroke: 'var(--flow-edge-exchange)', strokeWidth };
+          animated = true;
+          label = 'RPC';
+          labelStyle = { fontSize: 10, fontWeight: 600, fontFamily: 'var(--font-mono)', fill: 'var(--flow-edge-exchange)' };
+          labelBgStyle = { fill: 'var(--bg-base)', fillOpacity: 0.85 };
+        } else {
+          // Intra-node: in-process memory queue
+          edgeStyle = { strokeDasharray: '2,3', stroke: 'var(--flow-edge-local)', strokeWidth };
+          label = 'Local';
+          labelStyle = { fontSize: 10, fontWeight: 600, fontFamily: 'var(--font-mono)', fill: 'var(--flow-edge-local)' };
+          labelBgStyle = { fill: 'var(--bg-base)', fillOpacity: 0.85 };
+        }
+      } else {
+        edgeStyle = { stroke: 'var(--flow-edge)', strokeWidth };
+      }
+
       edges.push({
         id: `${node.id}->${child.id}`,
         source: node.id,
         target: child.id,
-        animated: child.isExchangeLink ?? false,
-        style: child.isExchangeLink
-          ? { strokeDasharray: '6,3', stroke: 'var(--flow-edge-exchange)' }
-          : { stroke: 'var(--flow-edge)' },
+        animated,
+        style: edgeStyle,
+        label,
+        labelStyle,
+        labelBgStyle,
         zIndex: 5,
       });
       collect(child);

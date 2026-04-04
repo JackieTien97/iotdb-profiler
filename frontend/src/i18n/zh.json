@@ -48,6 +48,17 @@
     "queryStats": "查询统计",
     "specifiedInfo": "特定信息"
   },
+  "sidebar": {
+    "queryMode": "查询",
+    "jsonImportMode": "JSON 导入"
+  },
+  "jsonImport": {
+    "title": "导入 JSON",
+    "uploadFile": "上传 .json 文件",
+    "visualize": "可视化",
+    "visualizing": "解析中...",
+    "invalidJson": "JSON 格式无效"
+  },
   "lang": {
     "toggle": "English"
   }

@@ -28,6 +28,7 @@
   --flow-bg-dots: rgba(0, 0, 0, 0.06);
   --flow-edge: #D4C9B8;
   --flow-edge-exchange: #C96442;
+  --flow-edge-local: #5B8A72;
   --node-handle: #C96442;
   --scrollbar-thumb: rgba(0, 0, 0, 0.1);
   --scrollbar-thumb-hover: rgba(0, 0, 0, 0.18);
@@ -61,6 +62,7 @@
   --flow-bg-dots: rgba(255, 255, 255, 0.04);
   --flow-edge: #4A443D;
   --flow-edge-exchange: #D97757;
+  --flow-edge-local: #5DB97E;
   --node-handle: #D97757;
   --scrollbar-thumb: rgba(255, 255, 255, 0.08);
   --scrollbar-thumb-hover: rgba(255, 255, 255, 0.14);

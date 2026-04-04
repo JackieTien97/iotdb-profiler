@@ -48,6 +48,17 @@
     "queryStats": "Query Statistics",
     "specifiedInfo": "Specified Info"
   },
+  "sidebar": {
+    "queryMode": "Query",
+    "jsonImportMode": "JSON Import"
+  },
+  "jsonImport": {
+    "title": "Import JSON",
+    "uploadFile": "Upload .json File",
+    "visualize": "Visualize",
+    "visualizing": "Parsing...",
+    "invalidJson": "Invalid JSON format"
+  },
   "lang": {
     "toggle": "中文"
   }

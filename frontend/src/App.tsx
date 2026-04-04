@@ -7,6 +7,7 @@ import QueryEditor from './components/QueryEditor';
 import PlanStatsBanner from './components/PlanStatsBanner';
 import PlanTree from './components/PlanTree';
 import DetailPanel from './components/DetailPanel';
+import JsonImportPanel from './components/JsonImportPanel';
 import { executeExplain, type ConnectionParams } from './api/queryApi';
 import { buildExplainTree, buildAnalyzeTree } from './utils/treeBuilder';
 import { resetFragmentColors } from './utils/colorScale';
@@ -14,6 +15,7 @@ import type { UnifiedTreeNode } from './types/explainAnalyze';
 import type { ExplainAnalyzeResult, PlanStatistics } from './types/explainAnalyze';
 
 type Mode = 'EXPLAIN' | 'EXPLAIN_ANALYZE' | 'EXPLAIN_ANALYZE_VERBOSE';
+type SidebarMode = 'query' | 'jsonImport';
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -31,6 +33,7 @@ function App() {
   const [planStats, setPlanStats] = useState<PlanStatistics | null>(null);
   const [fragmentCount, setFragmentCount] = useState(0);
   const [selectedNode, setSelectedNode] = useState<UnifiedTreeNode | null>(null);
+  const [sidebarMode, setSidebarMode] = useState<SidebarMode>('query');
 
   const toggleLang = () => i18n.changeLanguage(i18n.language === 'en' ? 'zh' : 'en');
 
@@ -53,6 +56,24 @@ function App() {
   };
 
   const handleSelectNode = useCallback((node: UnifiedTreeNode) => setSelectedNode(node), []);
+
+  const handleJsonImport = (jsonText: string) => {
+    setLoading(true); setError(null); setSelectedNode(null); resetFragmentColors();
+    try {
+      const json = JSON.parse(jsonText);
+      if ('fragmentInstances' in json && Array.isArray(json.fragmentInstances)) {
+        const result = json as ExplainAnalyzeResult;
+        setTree(buildAnalyzeTree(result)); setIsAnalyze(true);
+        setPlanStats(result.planStatistics); setFragmentCount(result.fragmentInstancesCount);
+      } else if (json.name && json.id) {
+        setTree(buildExplainTree(json)); setIsAnalyze(false); setPlanStats(null); setFragmentCount(0);
+      } else {
+        setError(t('jsonImport.invalidJson')); setTree(null); setPlanStats(null);
+      }
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Invalid JSON'); setTree(null); setPlanStats(null);
+    } finally { setLoading(false); }
+  };
 
   return (
     <div className="flex flex-col h-screen" style={{ background: 'var(--bg-base)' }}>
@@ -107,9 +128,35 @@ function App() {
           style={{ background: 'var(--bg-surface)', borderRight: '1px solid var(--border)' }}
         >
           <div className="p-5 space-y-6 flex-1">
-            <ConnectionForm connection={connection} onChange={setConnection} />
+            {/* Sidebar mode toggle */}
+            <div className="flex rounded-xl p-1 gap-1" style={{ background: 'var(--bg-raised)', border: '1px solid var(--border)' }}>
+              {([{ key: 'query' as const, label: t('sidebar.queryMode') }, { key: 'jsonImport' as const, label: t('sidebar.jsonImportMode') }]).map((m) => (
+                <button
+                  key={m.key}
+                  className="flex-1 py-1.5 text-[11px] font-medium rounded-lg transition-all duration-150 cursor-pointer"
+                  style={{
+                    fontFamily: 'var(--font-body)',
+                    background: sidebarMode === m.key ? 'var(--accent-soft)' : 'transparent',
+                    color: sidebarMode === m.key ? 'var(--accent)' : 'var(--text-muted)',
+                    border: sidebarMode === m.key ? '1px solid var(--border-accent)' : '1px solid transparent',
+                    fontWeight: sidebarMode === m.key ? 600 : 400,
+                  }}
+                  onClick={() => setSidebarMode(m.key)}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
             <div style={{ borderTop: '1px solid var(--border)' }} />
-            <QueryEditor sql={sql} onSqlChange={setSql} mode={mode} onModeChange={setMode} onRun={handleRun} loading={loading} />
+            {sidebarMode === 'query' ? (
+              <>
+                <ConnectionForm connection={connection} onChange={setConnection} />
+                <div style={{ borderTop: '1px solid var(--border)' }} />
+                <QueryEditor sql={sql} onSqlChange={setSql} mode={mode} onModeChange={setMode} onRun={handleRun} loading={loading} />
+              </>
+            ) : (
+              <JsonImportPanel onVisualize={handleJsonImport} loading={loading} />
+            )}
           </div>
           <div className="px-5 py-2 text-center" style={{ borderTop: '1px solid var(--border)', color: 'var(--text-muted)', fontSize: '10px', fontFamily: 'var(--font-mono)' }}>
             IoTDB Profiler v1.0

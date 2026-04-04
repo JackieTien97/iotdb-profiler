@@ -1,6 +1,6 @@
 # IoTDB Query Plan Visualizer
 
-A web-based tool for visualizing Apache IoTDB table-model query execution plans. Connect to any IoTDB instance, run SQL queries, and interactively explore the distributed execution plan tree.
+A web-based tool for visualizing Apache IoTDB table-model query execution plans. Connect to any IoTDB instance, run SQL queries, and interactively explore the distributed execution plan tree. You can also directly paste or upload JSON output from `EXPLAIN` commands — no database connection required.
 
 Inspired by [PEV2](https://github.com/dalibo/pev2) (PostgreSQL Explain Visualizer), but designed for IoTDB's distributed architecture with multi-fragment plan visualization.
 
@@ -10,6 +10,12 @@ Inspired by [PEV2](https://github.com/dalibo/pev2) (PostgreSQL Explain Visualize
 
 ### Dark Mode — EXPLAIN ANALYZE with Fragment Grouping
 ![Dark mode - Explain Analyze](docs/images/dark-analyze.png)
+
+### Dark Mode — Edge Thickness & Cross-node vs Intra-node Communication
+![Dark mode - Edge Features](docs/images/dark-edge-features.png)
+
+### Dark Mode — JSON Import Mode
+![Dark mode - JSON Import](docs/images/dark-json-import.png)
 
 ### Dark Mode — Node Detail Panel
 ![Dark mode - Detail Panel](docs/images/dark-detail.png)
@@ -23,8 +29,11 @@ Inspired by [PEV2](https://github.com/dalibo/pev2) (PostgreSQL Explain Visualize
 ## Features
 
 - **Three explain modes**: `EXPLAIN`, `EXPLAIN ANALYZE`, and `EXPLAIN ANALYZE VERBOSE`
+- **JSON Import**: Paste JSON text or upload `.json` files directly — visualize execution plans without a live IoTDB connection
 - **Distributed plan visualization**: Automatically stitches multiple fragment instances into a unified tree
 - **Fragment grouping**: Dashed bounding boxes with labels distinguish each query fragment (DataRegion, IP)
+- **Edge thickness by data volume**: Edge line width scales logarithmically with the number of output rows, making data flow bottlenecks immediately visible
+- **Cross-node vs intra-node communication**: Exchange links are visually distinguished — **RPC** (cross-node, dashed orange, animated) vs **Local** (intra-node memory queue, dotted green) — so you can instantly see which fragment boundaries involve expensive network serialization
 - **Interactive tree**: Pan, zoom, minimap, click-to-inspect powered by React Flow
 - **Performance metrics**: CPU time, output rows, memory with color-coded heat mapping (green → amber → red)
 - **Plan statistics banner**: Stacked bar chart showing planning phase breakdown
@@ -84,11 +93,22 @@ The frontend starts on `http://localhost:5173` with API proxy to the backend.
 
 ### 3. Use the App
 
+#### Query Mode (connect to IoTDB)
+
 1. Open `http://localhost:5173`
-2. Enter IoTDB connection info (default: `127.0.0.1:6667`, `root/root`)
-3. Enter the database name and SQL query
-4. Select explain mode and click **Run**
-5. Explore the execution plan tree — click nodes to see details
+2. Select **Query** mode in the left sidebar
+3. Enter IoTDB connection info (default: `127.0.0.1:6667`, `root/root`)
+4. Enter the database name and SQL query
+5. Select explain mode and click **Run**
+6. Explore the execution plan tree — click nodes to see details
+
+#### JSON Import Mode (no database needed)
+
+1. Open `http://localhost:5173`
+2. Select **JSON Import** mode in the left sidebar
+3. Paste `EXPLAIN (FORMAT JSON)` or `EXPLAIN ANALYZE (FORMAT JSON)` output into the editor, or click **Upload .json File** to load from a file
+4. Click **Visualize** — the tool auto-detects the JSON type (EXPLAIN vs EXPLAIN ANALYZE)
+5. Explore the execution plan tree as usual
 
 ## Production Deployment
 
@@ -146,6 +166,7 @@ iotdb-profiler/
 │       ├── components/               # UI components
 │       │   ├── ConnectionForm.tsx
 │       │   ├── QueryEditor.tsx
+│       │   ├── JsonImportPanel.tsx
 │       │   ├── PlanStatsBanner.tsx
 │       │   ├── PlanTree.tsx
 │       │   ├── DetailPanel.tsx
